@@ -9,7 +9,7 @@ func TestInit(t *testing.T) {
 	if root.Count != 0 {
 		t.Error("When initialized, node has a count of 0")
 	}
-	if len(root.children) != 0 {
+	if len(root.Children) != 0 {
 		t.Error("When initialized, node has 0 children")
 	}
 }
@@ -63,7 +63,7 @@ func TestInsertPrefix(t *testing.T) {
 			t.Error("non-terminal node has count of 0")
 		}
 
-		if child, ok := node.children[c]; ok {
+		if child, ok := node.Children[c]; ok {
 			node = child
 		} else {
 			t.Error("Child lookup failed for character", c)
@@ -74,7 +74,7 @@ func TestInsertPrefix(t *testing.T) {
 	if node.Count != 1 {
 		t.Error("terminal node has a count of 1")
 	}
-	if len(node.children) != 0 {
+	if len(node.Children) != 0 {
 		t.Error("terminal node has no children")
 	}
 }
@@ -89,7 +89,7 @@ func checkWord(t *testing.T, root *Node, word string, timesInserted uint) {
 		if node.Count != 0 {
 			t.Error("non-terminal node has count of 1")
 		}
-		if child, ok := node.children[c]; ok {
+		if child, ok := node.Children[c]; ok {
 			node = child
 		} else {
 			t.Error("child lookup failed for character", c, "in word", word)
@@ -100,7 +100,7 @@ func checkWord(t *testing.T, root *Node, word string, timesInserted uint) {
 	if node.Count != timesInserted {
 		t.Error("terminal node has a count of", timesInserted)
 	}
-	if len(node.children) != 0 {
+	if len(node.Children) != 0 {
 		t.Error("terminal node has no children")
 	}
 }

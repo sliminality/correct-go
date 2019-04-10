@@ -12,22 +12,22 @@ type Node struct {
 	// Frequency of words in the training corpus ending at the current trie node.
 	Count uint
 	// Trie nodes corresponding to suffix extensions of the current node.
-	children map[rune]*Node
+	Children map[rune]*Node
 }
 
 func CreateNode(val string) Node {
-	return Node{Val: val, Count: 0, children: make(map[rune]*Node)}
+	return Node{Val: val, Count: 0, Children: make(map[rune]*Node)}
 }
 
 // Insert a word into the trie.
 func (n *Node) Insert(s string) {
 	node := n
 	for i, c := range s {
-		if child, ok := node.advance(c); ok {
+		if child, ok := node.Advance(c); ok {
 			node = child
 		} else {
 			fresh := CreateNode(s[:i+1])
-			node.children[c] = &fresh
+			node.Children[c] = &fresh
 			node = &fresh
 		}
 	}
@@ -53,7 +53,7 @@ func (n *Node) IsWord() bool {
 func (n *Node) findNode(s string) (*Node, bool) {
 	node := n
 	for _, c := range s {
-		if child, ok := node.advance(c); ok {
+		if child, ok := node.Advance(c); ok {
 			node = child
 		} else {
 			return nil, false
@@ -63,8 +63,8 @@ func (n *Node) findNode(s string) (*Node, bool) {
 }
 
 // Check whether the node has a child corresponding to the given rune.
-func (n *Node) advance(c rune) (*Node, bool) {
-	child, ok := n.children[c]
+func (n *Node) Advance(c rune) (*Node, bool) {
+	child, ok := n.Children[c]
 	return child, ok
 }
 
@@ -77,7 +77,7 @@ func (n *Node) debugRecur(depth int) {
 	tab := strings.Repeat("  ", depth)
 	fmt.Println(tab, n.Val)
 
-	for _, c := range n.children {
+	for _, c := range n.Children {
 		c.debugRecur(depth + 1)
 	}
 }
