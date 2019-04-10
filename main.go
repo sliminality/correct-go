@@ -1,16 +1,29 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
-	"io/ioutil"
+	"log"
+	"os"
 )
 
 func main() {
-	// TODO(slim): Take the filename as an argument.
-	bytes, err := ioutil.ReadFile("corpus.txt")
+	pathname := flag.String("corpus", "", "path to corpus file")
+	flag.Parse()
+
+	file, err := os.Open(*pathname)
 	if err != nil {
-		// TODO(slim): Handle error lol
-		return
+		log.Fatal(err)
 	}
-	fmt.Println(string(bytes))
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 }
