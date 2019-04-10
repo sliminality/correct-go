@@ -1,11 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"flag"
-	"fmt"
 	"log"
 	"os"
+	dict "slim/correct/dictionary"
 )
 
 func main() {
@@ -18,12 +17,6 @@ func main() {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
+	d := dict.CreateDictionary(file)
+	d.Root.Debug()
 }
